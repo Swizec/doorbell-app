@@ -1,0 +1,24 @@
+service: doorbell-app
+
+provider:
+    name: aws
+    runtime: nodejs12.x
+    stage: dev
+    environment:
+
+    iamRoleStatements:
+
+functions:
+    answercall:
+        handler: dist/answercall.handler
+        events:
+            - http:
+                  path: answercall
+                  method: GET
+                  cors: true
+            - http:
+                  path: answercall
+                  method: POST
+                  cors: true
+
+resources:

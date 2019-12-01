@@ -1,0 +1,16 @@
+{
+    "name": "doorbell-app-backend",
+    "version": "1.0.0",
+    "description": "Answer the front gate buzzer via SMS",
+    "repository": "https://github.com/Swizec/doorbell-app",
+    "author": "Swizec Teller",
+    "license": "MIT",
+    "scripts": {
+        "build": "tsc",
+        "deploy": "npm run build && sls deploy"
+    },
+    "dependencies": {
+        "@types/aws-lambda": "^8.10.36",
+        "aws-lambda": "^0.1.2"
+    }
+}
