@@ -11,6 +11,8 @@
     },
     "dependencies": {
         "@types/aws-lambda": "^8.10.36",
-        "aws-lambda": "^0.1.2"
+        "@types/twilio": "^0.0.10",
+        "aws-lambda": "^0.1.2",
+        "twilio": "^3.37.1"
     }
 }
