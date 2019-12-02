@@ -11,7 +11,7 @@ const accountSid = "***REMOVED***";
 const authToken = "***REMOVED***";
 
 // Should be configurable in DB?
-const recipients = ["+16505375963"];
+const recipients = ["+16505375963", "+16506446545"];
 
 export const handler = async (event: APIGatewayEvent) => {
     const { RecordingUrl, TranscriptionText, CallSid, Called } = qs.parse(
