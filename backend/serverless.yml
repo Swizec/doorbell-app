@@ -5,8 +5,17 @@ provider:
     runtime: nodejs12.x
     stage: dev
     environment:
-        PHONE_NUMBER: "+12055258990"
+        CALLS_TABLE: ${self:service}-calls-${self:provider.stage}
     iamRoleStatements:
+        - Effect: Allow
+          Action:
+              - dynamodb:Query
+              - dynamodb:Scan
+              - dynamodb:GetItem
+              - dynamodb:PutItem
+              - dynamodb:UpdateItem
+              - dynamodb:DeleteItem
+          Resource: "arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.CALLS_TABLE}"
 
 functions:
     answercall:
@@ -43,3 +52,17 @@ functions:
                   cors: true
 
 resources:
+    Resources:
+        CallsTable:
+            Type: "AWS::DynamoDB::Table"
+            Properties:
+                AttributeDefinitions:
+                    - AttributeName: phone_number
+                      AttributeType: S
+                KeySchema:
+                    - AttributeName: phone_number
+                      KeyType: HASH
+                ProvisionedThroughput:
+                    ReadCapacityUnits: 1
+                    WriteCapacityUnits: 1
+                TableName: ${self:provider.environment.CALLS_TABLE}
