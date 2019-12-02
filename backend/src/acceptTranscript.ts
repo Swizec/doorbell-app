@@ -10,6 +10,9 @@ import { updateItem } from "./dynamodb";
 const accountSid = "***REMOVED***";
 const authToken = "***REMOVED***";
 
+// Should be configurable in DB?
+const recipients = ["+16505375963"];
+
 export const handler = async (event: APIGatewayEvent) => {
     const { RecordingUrl, TranscriptionText, CallSid, Called } = qs.parse(
         event.body!
@@ -18,23 +21,27 @@ export const handler = async (event: APIGatewayEvent) => {
     // Save (CallSid, Called) pair for lookup in SMS handler
     await updateItem({
         Key: { phone_number: Called as string },
-        UpdateExpression: "SET callSid = :callSid, createdAt = :createdAt",
+        UpdateExpression:
+            "SET callSid = :callSid, createdAt = :createdAt, handledAt = :handledAt",
         ExpressionAttributeValues: {
             ":callSid": CallSid as string,
-            ":createdAt": new Date().toISOString()
+            ":createdAt": new Date().toISOString(),
+            ":handledAt": null
         }
     });
 
     const client = twilio(accountSid, authToken);
-    await client.messages.create({
-        body: `There's someone at the door!\n\n
+    for (let recipient of recipients) {
+        await client.messages.create({
+            body: `There's someone at the door!\n\n
         transcript: "${TranscriptionText}"\n\n
         recording: ${RecordingUrl}\n
         Reply YES to let them in!
         `,
-        to: "+16505375963",
-        from: Called as string
-    });
+            to: recipient,
+            from: Called as string
+        });
+    }
 
     return {
         statusCode: 200,

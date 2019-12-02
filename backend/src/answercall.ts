@@ -19,7 +19,7 @@ export const handler = async (event: APIGatewayEvent) => {
 async function handleBuzzerCall() {
     const response = new twiml.VoiceResponse();
     response.say(
-        "Welcome to our place. What do you want? Answer after the beep, then press any key"
+        "Welcome! What do you want? Answer after the beep, then press any key"
     );
     response.record({
         action: "acceptRecording",
