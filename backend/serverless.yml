@@ -34,5 +34,12 @@ functions:
                   path: acceptTranscript
                   method: POST
                   cors: true
+    handleSMSReply:
+        handler: dist/handleSMSReply.handler
+        events:
+            - http:
+                  path: handleSMSReply
+                  method: POST
+                  cors: true
 
 resources:

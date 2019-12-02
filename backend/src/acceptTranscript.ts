@@ -3,8 +3,6 @@ import qs from "querystring";
 import twilio from "twilio";
 
 // 5. Send text to swizec
-// 6. Wait for reply
-// 7. Send dial tone to phone call
 
 // This should come from AWS secrets storage, but I'm lazy
 // will rotate these secrets after the stream
@@ -14,8 +12,10 @@ const authToken = "***REMOVED***";
 export const handler = async (event: APIGatewayEvent) => {
     const { RecordingUrl, TranscriptionText, CallSid } = qs.parse(event.body!);
 
+    console.log(process.env.PHONE_NUMBER);
+
     const client = twilio(accountSid, authToken);
-    client.messages.create({
+    await client.messages.create({
         body: `There's someone at the door!\n\n
         "${TranscriptionText}"\n\n
         recording: ${RecordingUrl}\n
@@ -24,11 +24,6 @@ export const handler = async (event: APIGatewayEvent) => {
         to: "+16505375963",
         from: process.env.PHONE_NUMBER
     });
-
-    console.log(event);
-    // const response = new twiml.VoiceResponse();
-
-    // response.say("Thank you");
 
     return {
         statusCode: 200,
