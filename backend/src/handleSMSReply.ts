@@ -3,7 +3,7 @@ import { twiml } from "twilio";
 import twilio from "twilio";
 import qs from "querystring";
 
-import { sendTwiml } from "./utils";
+import { sendTwiml, twilioTokens } from "./utils";
 import { getItem, updateItem } from "./dynamodb";
 
 // 6. Get sms reply
@@ -97,12 +97,8 @@ async function closeDoor(callSid: string, phone_number: string) {
     return sendTwiml(message);
 }
 
-// This should come from AWS secrets storage, but I'm lazy
-// will rotate these secrets after the stream
-const accountSid = "***REMOVED***";
-const authToken = "***REMOVED***";
-
 async function continueCall(callSid: string, openDoor: boolean) {
+    const { accountSid, authToken } = await twilioTokens();
     const client = twilio(accountSid, authToken);
     try {
         const response = new twiml.VoiceResponse();

@@ -12,7 +12,7 @@ export const handler = async (event: APIGatewayEvent) => {
     response.pause({
         length: 60
     });
-    response.say("Looks like nobody answered, try callinng a real human.");
+    response.say("Looks like nobody answered, try calling a real human.");
 
     return sendTwiml(response);
 };
