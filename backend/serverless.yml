@@ -16,6 +16,16 @@ provider:
               - dynamodb:UpdateItem
               - dynamodb:DeleteItem
           Resource: "arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.CALLS_TABLE}"
+        - Effect: Allow
+          Action:
+              - secretsmanager:GetSecretValue
+          Resource:
+              - Fn::Join:
+                    - ":"
+                    - - arn:aws:secretsmanager
+                      - Ref: AWS::Region
+                      - Ref: AWS::AccountId
+                      - secret:*
 
 functions:
     answercall:
