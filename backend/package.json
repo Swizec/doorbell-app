@@ -14,7 +14,7 @@
         "@types/aws-sdk": "^2.7.0",
         "@types/twilio": "^0.0.10",
         "aws-lambda": "^0.1.2",
-        "aws-sdk": "^2.580.0",
+        "aws-sdk": "^2.814.0",
         "twilio": "^3.37.1"
     }
 }
